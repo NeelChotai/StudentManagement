@@ -54,28 +54,28 @@ namespace StudentManagement
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBox.Text) || string.IsNullOrWhiteSpace(comboBox.Text))
+            if (string.IsNullOrWhiteSpace(textBox.Text) || string.IsNullOrWhiteSpace(comboBox.Text)) //checks if anything is empty
             {
                 MessageBox.Show("Please enter a valid username or access rights.",
                     "Error",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    MessageBoxImage.Error); //shows the user an error if there is anything empty
             }
-            else if (textBox.Text.Contains('\'') || textBox.Text.Contains(' '))
+            else if (textBox.Text.Contains('\'') || textBox.Text.Contains(' ')) //checks for invalid characters
             {
                 MessageBox.Show("Invalid character in username. Please try again.",
                     "Error",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    MessageBoxImage.Error); //notifies the user that there are invalid characters
             }
             else
             {
-                string password = RandomString();
-                database.CreateNewUser(textBox.Text, security.Encrypt(password), (byte)comboBox.SelectedIndex);
+                string password = RandomString(); //generates a new random string
+                database.CreateNewUser(textBox.Text, security.Encrypt(password), (byte)comboBox.SelectedIndex); //creates a new user with the username in the textBox, an encrypted passwords and access rights at the index they chose
                 MessageBox.Show(string.Format("User has been created. Their password is: {0}\nThe user will have to change this password on their initial login.", password),
                     "New Password",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                    MessageBoxImage.Information); //shows the user the new password
             }
         }
 

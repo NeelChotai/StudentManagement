@@ -13,7 +13,6 @@ namespace StudentManagement
             InitializeComponent();
             button.IsEnabled = false;
             ServerCheck();
-            passwordBox.KeyDown += new KeyEventHandler(EnterClicked);
         }
         void ServerCheck()
         {
@@ -32,32 +31,25 @@ namespace StudentManagement
             }
             database.CloseConnection();
         }
-        void userType()
+        void UserType()
         {
-            byte accessRights = database.GetAccessRights(textBox.Text);
+            byte accessRights = database.GetAccessRights(textBox.Text); //gets access rights for username entered
             switch (accessRights)
             {
                 case (byte)Database.Permissions.Admin:
                 case (byte)Database.Permissions.AlphaAdmin:
-                    AdminMain adminMain = new AdminMain() { Title = string.Format("{0}'s Control Panel", textBox.Text) };
+                    AdminMain adminMain = new AdminMain() { Title = string.Format("{0}'s Panel", textBox.Text) }; //in the case that an administrator or alpha administrator wishes to access the program, this will allow the administration window to be shown
                     this.Hide();
                     adminMain.Show();
                     this.Close();
                     break;
 
                 case (byte)Database.Permissions.User:
-                    Main main = new Main() { Title = string.Format("{0}'s Control Panel", textBox.Text) };
+                    Main main = new Main() { Title = string.Format("{0}'s Panel", textBox.Text) }; //otherwise the regular user window is shown
                     this.Hide();
                     main.Show();
                     this.Close();
                     break;
-            }
-        }
-        void EnterClicked(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                userType();
             }
         }
 
@@ -67,13 +59,13 @@ namespace StudentManagement
                 MessageBox.Show("Please enter a username.",
                     "Error",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    MessageBoxImage.Error); //checks if there is a username entered, reports error if not
 
             else if (string.IsNullOrWhiteSpace(passwordBox.Password))
                 MessageBox.Show("Please enter a password.",
                     "Error",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    MessageBoxImage.Error); //checks if there is a password entered, reports error if not
 
             else if (security.Verify(textBox.Text, passwordBox.Password))
             {
@@ -82,11 +74,11 @@ namespace StudentManagement
                     ChangePassword changePassword = new ChangePassword() { Title = string.Format("{0}'s New Password", textBox.Text) };
                     this.Hide();
                     changePassword.Show();
-                    this.Close();
+                    this.Close(); //all reset passwords will be 5 characters long and the user, for security reasons, will have to reset their password the first time they log in - this is to make sure they do so
                 }
                 else
                 {
-                    userType();
+                    UserType();
                 }
             }
             else
@@ -94,7 +86,7 @@ namespace StudentManagement
                 MessageBox.Show("Invalid username or password, please try again.",
                     "Error",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    MessageBoxImage.Error); //catches any other error
                 passwordBox.Password = string.Empty;
             }
         }
